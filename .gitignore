@@ -9,6 +9,7 @@
 /SafeStride/[Bb]uilds/
 /SafeStride/[Ll]ogs/
 /SafeStride/[Uu]ser[Ss]ettings/
+/SafeStride/Data/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
