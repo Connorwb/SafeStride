@@ -10,6 +10,7 @@
 /SafeStride/[Ll]ogs/
 /SafeStride/[Uu]ser[Ss]ettings/
 /SafeStride/Data/*
+/MapData/cache/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -71,3 +72,6 @@
 # Temporary auto-generated Android Assets
 /SafeStride/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /SafeStride/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Cache Files
+SafeStride/cache/nominatim-*
