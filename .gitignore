@@ -10,8 +10,11 @@
 /SafeStride/[Ll]ogs/
 /SafeStride/[Uu]ser[Ss]ettings/
 /SafeStride/Data/*
-/MapData/cache/*
+/MapData/dist/OpenStreetMapInfo/cache/*
+/SafeStride/cache/*
 /MapData/.idea
+/MapData/build
+/MapData/OpenStreetMapInfo.spec
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

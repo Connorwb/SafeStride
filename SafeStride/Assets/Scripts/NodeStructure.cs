@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System.Diagnostics;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -19,11 +19,31 @@ public class NodeStructure : MonoBehaviour
 {
     void Start()
     {
-        List<WaypointNode> AStarNodes = new List<WaypointNode>();
-        Dictionary<int, List<WaypointNode>> connections = new Dictionary<int, List<WaypointNode>>();
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         string newPath = Path.GetFullPath(Path.Combine(execPath, @"..\..\Assets\Data\Intersections.txt"));
-        Debug.Log(newPath);
+
+        if (!(File.Exists(newPath)))
+        {
+            UnityEngine.Debug.Log("Downloading intersections data.");
+            string m_Path = Application.dataPath;
+            ProcessStartInfo start = new ProcessStartInfo();
+            start.FileName = Path.GetFullPath(Path.Combine(m_Path, @"..\..\MapData\dist\OpenStreetMapInfo\OpenStreetMapInfo.exe"));
+            start.Arguments = "-u";
+            start.UseShellExecute = false;
+            start.RedirectStandardOutput = false;
+            using (Process process = Process.Start(start))
+            {
+            }
+            UnityEngine.Debug.Log("Done downloading data.");
+        }
+        else
+        {
+            UnityEngine.Debug.Log("Found the intersections data!");
+        }
+        
+        List<WaypointNode> AStarNodes = new List<WaypointNode>();
+        Dictionary<int, List<WaypointNode>> connections = new Dictionary<int, List<WaypointNode>>();
+        UnityEngine.Debug.Log(newPath);
         IEnumerable<string> lines = File.ReadLines(newPath);
         foreach (string line in lines)
         {
@@ -55,7 +75,7 @@ public class NodeStructure : MonoBehaviour
                     if (node == checknode) continue;
                     if (node.connections.Contains(checknode)) continue;
                     node.connections.Add(checknode);
-                    Debug.Log("Linked (" + node.lat + "," + node.lon + ") to (" + checknode.lat + "," + checknode.lon + ")");
+                    UnityEngine.Debug.Log("Linked (" + node.lat + "," + node.lon + ") to (" + checknode.lat + "," + checknode.lon + ")");
                 }
             }
         }
