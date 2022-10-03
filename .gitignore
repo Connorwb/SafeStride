@@ -9,6 +9,9 @@
 /SafeStride/[Bb]uilds/
 /SafeStride/[Ll]ogs/
 /SafeStride/[Uu]ser[Ss]ettings/
+/SafeStride/Data/*
+/MapData/cache/*
+/MapData/.idea
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -25,6 +28,7 @@
 
 # Visual Studio cache directory
 .vs/
+/SafeStride/.vsconfig
 
 # Gradle cache directory
 .gradle/
@@ -70,3 +74,6 @@
 # Temporary auto-generated Android Assets
 /SafeStride/[Aa]ssets/[Ss]treamingAssets/aa.meta
 /SafeStride/[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Cache Files
+SafeStride/cache/nominatim-*
