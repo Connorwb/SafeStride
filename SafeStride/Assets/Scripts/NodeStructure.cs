@@ -1,8 +1,10 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Reflection;
+using System.Linq;
 
 public class WaypointNode : Node {
     public List<WaypointNode> connections;
@@ -12,6 +14,7 @@ public class WaypointNode : Node {
         lon = inlon;
         nodeType = NodeType.Waypoint;
         connections = new List<WaypointNode>();
+        distance = (Math.Abs(targetX - lon) + Math.Abs(targetY - lat));
     }
 }
 
@@ -134,7 +137,7 @@ public class Astar
 
             var checkTile = active.OrderBy(x => x.costDist).First();
             
-            if (checkTile.X == finish.X && checkTile.Y == finish.Y)
+            if (checkTile.lonX == finish.lonX && checkTile.latY == finish.latY)
             {
                 //found shortest distance thanks to OrderBy
                 var tile = checkTile;
@@ -145,7 +148,7 @@ public class Astar
                     tile = tile.Parent;
                     if (tile == null)
                     {
-                        Console.WriteLine("Done");
+                        //Console.WriteLine("Done");
                     }
                     
                 }
@@ -159,7 +162,7 @@ public class Astar
         var possibleLoc = new List<locations>()
         {
             //new locations {lonX,latY,Parent,Cost}
-            new locations {ID = startID},
+            //new locations {ID = startID},
 
         };
 
@@ -171,12 +174,12 @@ public class Astar
 }
 class locations
 {
-    public double lonX { get; set; } = WaypointNode.lon;
-    public double latY { get; set; } = WaypointNode.lat;
+    public double lonX { get; set; } 
+    public double latY { get; set; } 
     public double Cost { get; set; }
     public double Distance { get; set; }
     public double costDist => Cost + Distance;
-    public int ID { get; set; } = WaypointNode.connections;
+    public int ID { get; set; } 
     public locations Parent { get; set; }
 
     public void SetDistance(int targetX, int targetY)
