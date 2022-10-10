@@ -61,3 +61,126 @@ public class NodeStructure : MonoBehaviour
         }
     }
 }
+public class Astar
+{
+    static void main(string[] args)
+    {
+        var startCoordX = 0.0;
+        var startCoordY = 0.0;
+        var endCoordX = 0.0;
+        var endCoordY = 0.0;
+        var startID = 0;
+        var endID = 0;
+        
+        //this should all be taking in user input via gui, but...
+        Console.WriteLine("Enter Start X(longitude) coordinate");
+        try {
+            startCoordX = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid Coordinate");
+        }
+        Console.WriteLine("Enter Start Y(latitude) coordinate");
+        try {
+            startCoordY = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid Coordinate");
+        }
+        Console.WriteLine("Enter End X(longitude) coordinate");
+        try {
+            endCoordX = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid Coordinate");
+        }
+        Console.WriteLine("Enter End Y(latitude) coordinate");
+        try {
+            endCoordY = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid Coordinate");
+        }
+        Console.WriteLine("Enter Start ID");
+        try {
+            startCoordX = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid ID");
+        }
+        Console.WriteLine("Enter End ID");
+        try {
+            startCoordX = Console.ReadLine();
+        }catch{
+            Console.WriteLine("Please enter a valid ID");
+        }
+        
+
+        //searching for the starting coordinates
+        var start = new locations();
+        start.latY = AStarNodes.FindIndex(x => x.Contains(startCoordY));
+        start.lonX = AStarNodes[start.latY].Find(startCoordX);
+
+        //end coordinates now
+        var finish = new locations();
+        finish.latY = AStarNodes.FindIndex(x => x.Contains(endCoordY));
+        finish.lonX = AStarNodes[finish.latY].Find(endCoordX);
+
+        //finding distance between
+        start.SetDistance(finish.lonX, finish.latY);
+
+        //making active and visited lists, populating the active list
+        var active = new List<locations>();
+        active.Add(start);
+        var visited = new List<locations>();
+
+        while (active.any()) //run while there are still active locations
+        {
+
+            var checkTile = active.OrderBy(x => x.costDist).First();
+            
+            if (checkTile.X == finish.X && checkTile.Y == finish.Y)
+            {
+                //found shortest distance thanks to OrderBy
+                var tile = checkTile;
+                while(true)
+                {
+                    //drawing the path would go here, but idk yet
+
+                    tile = tile.Parent;
+                    if (tile == null)
+                    {
+                        Console.WriteLine("Done");
+                    }
+                    
+                }
+            }
+            visited.Add(checkTile);
+            active.Remove(checkTile);
+        }
+    }
+    private static List<locations> GetWalkable(List<WaypointNode> AStarNodes, locations currentLoc, locations targetLoc)
+    {
+        var possibleLoc = new List<locations>()
+        {
+            //new locations {lonX,latY,Parent,Cost}
+            new locations {ID = startID},
+
+        };
+
+        //possibleLoc.ForEach(locations => locations.SetDistance(targetLoc.lonX, targetLoc.latY));
+        return possibleLoc 
+                .ToList();
+
+    }
+}
+class locations
+{
+    public double lonX { get; set; } = WaypointNode.lon;
+    public double latY { get; set; } = WaypointNode.lat;
+    public double Cost { get; set; }
+    public double Distance { get; set; }
+    public double costDist => Cost + Distance;
+    public int ID { get; set; } = WaypointNode.connections;
+    public locations Parent { get; set; }
+
+    public void SetDistance(int targetX, int targetY)
+    {
+        this.Distance = Math.Abs(targetX - lonX) + Math.Abs(targetY - latY);
+    }
+}
