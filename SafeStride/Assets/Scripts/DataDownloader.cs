@@ -10,7 +10,7 @@ public class DataDownloader
     public string ListDatabases()
     {
         string retString = "";
-        MongoClient dbClient = new MongoClient("mongodb + srv://safestride.pum3uy6.mongodb.net/myFirstDatabase");
+        MongoClient dbClient = new MongoClient("mongodb+srv://bramhalc:qAGBTrJ6U4McuEDl@safestride.pum3uy6.mongodb.net/test");
         var dbList = dbClient.ListDatabases().ToList();
 
         retString += "The list of databases on this server is: ";

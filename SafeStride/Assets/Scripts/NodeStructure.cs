@@ -9,7 +9,7 @@ public class NodeStructure : MonoBehaviour
     void Start()
     {
         DataDownloader downloadMan = new DataDownloader();
-        downloadMan.ListDatabases();
+        UnityEngine.Debug.Log(downloadMan.ListDatabases());
         return;
         
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);

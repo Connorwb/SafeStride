@@ -14,6 +14,8 @@
 /SafeStride/cache/*
 /MapData/.idea
 /MapData/build
+/MapData/json/*
+/MapData/cache/*
 /MapData/OpenStreetMapInfo.spec
 
 # MemoryCaptures can get excessive in size.
