@@ -4,21 +4,14 @@ using UnityEngine;
 using System.IO;
 using System.Reflection;
 
-public class WaypointNode : Node {
-    public List<WaypointNode> connections;
-    public WaypointNode(double inlat, double inlon)
-    {
-        lat = inlat;
-        lon = inlon;
-        nodeType = NodeType.Waypoint;
-        connections = new List<WaypointNode>();
-    }
-}
-
 public class NodeStructure : MonoBehaviour
 {
     void Start()
     {
+        DataDownloader downloadMan = new DataDownloader();
+        downloadMan.ListDatabases();
+        return;
+        
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         string newPath = Path.GetFullPath(Path.Combine(execPath, @"..\..\Assets\Data\Intersections.txt"));
 

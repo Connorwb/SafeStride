@@ -28,4 +28,5 @@ Unity Version: 2021.3.10f1
 **OpenStreetMap**: All parts of our database that use data downloaded from OSM must be given if asked by any user. If we keep all the other data we agregate functionally seperate from our node data, I don't think this applies, but read the Open Database License to be sure.\
 **Volusia County Registry**: Fine to use, but a *crime* to alter "with the intent to misrepresent the information". Outside statues also make using the data for discrimination purposes illegal. Our database omits names and faces, so hopefully this clears us of this legal issue.\
 **geocodeio**: Only 2,500 free address lookups per day. If you exceed that value you will have to pay a fee per 1,000 addresses or purchase unlimited.\
+**MongoDB**: Apache 2.0, no notable restrictions.
 
