@@ -17,7 +17,7 @@ public class ReadInput : MonoBehaviour
         
     }
     
-    public void ReadInput(double sCoord) //, double eCoord, int startID, int endID
+    public void ReadInputs(double sCoord) //, double eCoord, int startID, int endID
     {
         input = sCoord;
         Debug.Log(input);

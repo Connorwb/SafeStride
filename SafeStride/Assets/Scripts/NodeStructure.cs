@@ -14,7 +14,7 @@ public class WaypointNode : Node {
         lon = inlon;
         nodeType = NodeType.Waypoint;
         connections = new List<WaypointNode>();
-        distance = (Math.Abs(targetX - lon) + Math.Abs(targetY - lat));
+        double distance = (Math.Abs(targetX - lon) + Math.Abs(targetY - lat));
     }
 }
 
@@ -68,50 +68,14 @@ public class Astar
 {
     static void main(string[] args)
     {
-        var startCoordX = 0.0;
-        var startCoordY = 0.0;
-        var endCoordX = 0.0;
-        var endCoordY = 0.0;
-        var startID = 0;
-        var endID = 0;
+        double startCoordX = 0.0;
+        double startCoordY = 0.0;
+        double endCoordX = 0.0;
+        double endCoordY = 0.0;
+        int startID = 0;
+        int endID = 0;
         
         //this should all be taking in user input via gui, but...
-        Console.WriteLine("Enter Start X(longitude) coordinate");
-        try {
-            startCoordX = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid Coordinate");
-        }
-        Console.WriteLine("Enter Start Y(latitude) coordinate");
-        try {
-            startCoordY = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid Coordinate");
-        }
-        Console.WriteLine("Enter End X(longitude) coordinate");
-        try {
-            endCoordX = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid Coordinate");
-        }
-        Console.WriteLine("Enter End Y(latitude) coordinate");
-        try {
-            endCoordY = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid Coordinate");
-        }
-        Console.WriteLine("Enter Start ID");
-        try {
-            startCoordX = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid ID");
-        }
-        Console.WriteLine("Enter End ID");
-        try {
-            startCoordX = Console.ReadLine();
-        }catch{
-            Console.WriteLine("Please enter a valid ID");
-        }
         
 
         //searching for the starting coordinates
