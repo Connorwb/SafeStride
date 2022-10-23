@@ -10,11 +10,16 @@ public class WaypointNode : Node {
     public List<WaypointNode> connections;
     public WaypointNode(double inlat, double inlon)
     {
+        double targetX, targetY;
         lat = inlat;
         lon = inlon;
         nodeType = NodeType.Waypoint;
         connections = new List<WaypointNode>();
-        double distance = (Math.Abs(targetX - lon) + Math.Abs(targetY - lat));
+        double distance;
+    }
+    public void SetDistance(double targetX, double targetY)
+    {
+        this.Distance = Math.Abs(targetX - lon) + Math.Abs(targetY - lat);
     }
 }
 
@@ -22,6 +27,15 @@ public class NodeStructure : MonoBehaviour
 {
     void Start()
     {
+        double startCoordX = 0.0;
+        double startCoordY = 0.0;
+        double endCoordX = 0.0;
+        double endCoordY = 0.0;
+        int startID = 0;
+        int endID = 0;
+
+        //take in user input from gui
+
         List<WaypointNode> AStarNodes = new List<WaypointNode>();
         Dictionary<int, List<WaypointNode>> connections = new Dictionary<int, List<WaypointNode>>();
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
@@ -62,40 +76,24 @@ public class NodeStructure : MonoBehaviour
                 }
             }
         }
-    }
-}
-public class Astar
-{
-    static void main(string[] args)
-    {
-        double startCoordX = 0.0;
-        double startCoordY = 0.0;
-        double endCoordX = 0.0;
-        double endCoordY = 0.0;
-        int startID = 0;
-        int endID = 0;
-        
-        //this should all be taking in user input via gui, but...
-        
-
         //searching for the starting coordinates
-        var start = new locations();
+        var start = new AStarNodes();
         start.latY = AStarNodes.FindIndex(x => x.Contains(startCoordY));
         start.lonX = AStarNodes[start.latY].Find(startCoordX);
 
         //end coordinates now
-        var finish = new locations();
+        var finish = new AStarNodes();
         finish.latY = AStarNodes.FindIndex(x => x.Contains(endCoordY));
         finish.lonX = AStarNodes[finish.latY].Find(endCoordX);
 
         //finding distance between
         start.SetDistance(finish.lonX, finish.latY);
-
+        
         //making active and visited lists, populating the active list
-        var active = new List<locations>();
+        var active = new List<AstarNodes>();
         active.Add(start);
-        var visited = new List<locations>();
-
+        var visited = new List<AStarNodes>();
+        
         while (active.any()) //run while there are still active locations
         {
 
@@ -121,6 +119,10 @@ public class Astar
             active.Remove(checkTile);
         }
     }
+}
+/*
+public class Astar
+{
     private static List<locations> GetWalkable(List<WaypointNode> AStarNodes, locations currentLoc, locations targetLoc)
     {
         var possibleLoc = new List<locations>()
@@ -129,6 +131,7 @@ public class Astar
             //new locations {ID = startID},
 
         };
+        
 
         //possibleLoc.ForEach(locations => locations.SetDistance(targetLoc.lonX, targetLoc.latY));
         return possibleLoc 
@@ -136,18 +139,20 @@ public class Astar
 
     }
 }
+
 class locations
 {
     public double lonX { get; set; } 
     public double latY { get; set; } 
-    public double Cost { get; set; }
-    public double Distance { get; set; }
-    public double costDist => Cost + Distance;
+    public double cost { get; set; }
+    public double distance { get; set; }
+    public double costDist => cost + distance;
     public int ID { get; set; } 
     public locations Parent { get; set; }
 
-    public void SetDistance(int targetX, int targetY)
+    public void SetDistance(double targetX, double targetY)
     {
-        this.Distance = Math.Abs(targetX - lonX) + Math.Abs(targetY - latY);
+        this.distance = Math.Abs(targetX - lonX) + Math.Abs(targetY - latY);
     }
 }
+*/
