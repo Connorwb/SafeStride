@@ -14,6 +14,7 @@ public class Node
 public class WaypointNode : Node
 {
     public List<WaypointNode> connections;
+    public List<int> ways;
     public WaypointNode(double inlat, double inlon)
     {
         lat = inlat;

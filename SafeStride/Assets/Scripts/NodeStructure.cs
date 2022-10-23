@@ -8,10 +8,13 @@ public class NodeStructure : MonoBehaviour
 {
     void Start()
     {
-        DataDownloader downloadMan = new DataDownloader();
-        UnityEngine.Debug.Log(downloadMan.ListDatabases());
-        return;
-        
+        DataDownloader downMan = new DataDownloader();
+        //UnityEngine.Debug.Log(downMan.ListDatabases());
+        UnityEngine.Debug.Log(downMan.GetWaypointsWithin(29.197797, -81.033681, 29.193797, -81.053935, 0).Count); 
+    }
+
+    /*void Start()
+    {
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         string newPath = Path.GetFullPath(Path.Combine(execPath, @"..\..\Assets\Data\Intersections.txt"));
 
@@ -72,5 +75,5 @@ public class NodeStructure : MonoBehaviour
                 }
             }
         }
-    }
+    }*/
 }
