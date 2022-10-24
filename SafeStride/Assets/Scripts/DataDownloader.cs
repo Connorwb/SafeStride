@@ -4,11 +4,6 @@ using System.Collections.Generic;
 
 public class DataDownloader
 {
-    void Download()
-    {
-        
-    }
-
     public string ListDatabases()
     {
         string retString = "";
