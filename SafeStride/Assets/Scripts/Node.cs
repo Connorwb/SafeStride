@@ -21,5 +21,6 @@ public class WaypointNode : Node
         lon = inlon;
         nodeType = NodeType.Waypoint;
         connections = new List<WaypointNode>();
+        ways = new List<int>();
     }
 }

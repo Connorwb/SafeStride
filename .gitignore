@@ -15,6 +15,7 @@
 /MapData/.idea
 /MapData/build
 /MapData/json/*
+/OffenderData/json/*
 /MapData/cache/*
 /MapData/OpenStreetMapInfo.spec
 
@@ -82,3 +83,4 @@
 
 # Cache Files
 SafeStride/cache/nominatim-*
+OffenderData/csvjson.json

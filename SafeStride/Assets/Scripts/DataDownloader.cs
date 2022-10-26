@@ -1,6 +1,7 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class DataDownloader
 {
@@ -29,6 +30,7 @@ public class DataDownloader
         MongoClient dbClient = new MongoClient("mongodb+srv://bramhalc:qAGBTrJ6U4McuEDl@safestride.pum3uy6.mongodb.net/test");
         var database = dbClient.GetDatabase("WaypointData");
         var collection = database.GetCollection<BsonDocument>("Intersections");
+        UnityEngine.Debug.Log(collection.EstimatedDocumentCount());
         var filterBuilder = Builders<BsonDocument>.Filter;
         var filter = filterBuilder.Gt("latitude", latmin) & filterBuilder.Lt("latitude", latmax) 
             & filterBuilder.Gt("longitude", lonmin) & filterBuilder.Lt("longitude", lonmax);
