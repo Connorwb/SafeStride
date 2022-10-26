@@ -41,4 +41,23 @@ public class DataDownloader
         }
         return waypoints;
     }
+
+    public List<OffenderNode> GetOffendersWithin(double latmin, double lonmin, double latmax, double lonmax, double buffer)
+    {
+        List<OffenderNode> waypoints = new List<OffenderNode>();
+        MongoClient dbClient = new MongoClient("mongodb+srv://bramhalc:qAGBTrJ6U4McuEDl@safestride.pum3uy6.mongodb.net/test");
+        var database = dbClient.GetDatabase("OffenderData");
+        var collection = database.GetCollection<BsonDocument>("initialExcel");
+        var filterBuilder = Builders<BsonDocument>.Filter;
+        var filter = filterBuilder.Gt("latitude", latmin) & filterBuilder.Lt("latitude", latmax)
+            & filterBuilder.Gt("longitude", lonmin) & filterBuilder.Lt("longitude", lonmax);
+        var queryResults = collection.Find(filter);
+        var cursor = collection.Find(filter).ToCursor();
+        foreach (var document in cursor.ToEnumerable())
+        {
+            OffenderNode newnode = new OffenderNode(document.GetValue("latitude").AsDouble, document.GetValue("longitude").AsDouble, (document.GetValue("TRANSIENT").AsString == "TRUE"));
+            waypoints.Add(newnode);
+        }
+        return waypoints;
+    }
 }
