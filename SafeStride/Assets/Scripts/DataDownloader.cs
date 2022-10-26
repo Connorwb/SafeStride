@@ -37,6 +37,7 @@ public class DataDownloader
             {
                 newnode.ways.Add(way.AsInt32);
             }
+            waypoints.Add(newnode);
         }
         return waypoints;
     }

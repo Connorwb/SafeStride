@@ -10,14 +10,6 @@ public class NodeStructure : MonoBehaviour
 {
     void Start()
     {
-        DataDownloader downMan = new DataDownloader();
-        UnityEngine.Debug.Log(downMan.ListDatabases());
-        UnityEngine.Debug.Log(downMan.GetWaypointsWithin(29.201424, -81.050704, 29.203591, -81.046826, 0).Count);
-    }
-}
-
-    /*void Start()
-    {
         double startCoordX = 0.0;
         double startCoordY = 0.0;
         double endCoordX = 0.0;
