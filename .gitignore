@@ -14,7 +14,10 @@
 /SafeStride/cache/*
 /MapData/.idea
 /MapData/build
+/MapData/json/*
+/MapData/cache/*
 /MapData/OpenStreetMapInfo.spec
+/OffenderData/json/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
@@ -80,3 +83,4 @@
 
 # Cache Files
 SafeStride/cache/nominatim-*
+OffenderData/csvjson.json
