@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ReadInput : MonoBehaviour
 {
-    private int input;
+    private double input;
     // Start is called before the first frame update
     void Start()
     {
