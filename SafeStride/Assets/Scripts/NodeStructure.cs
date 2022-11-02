@@ -8,7 +8,12 @@ using System.Linq;
 
 public class NodeStructure : MonoBehaviour
 {
-    void Start()
+    private void Start()
+    {
+        
+    }
+
+    /*void Start()
     {
         double startCoordX = 0.0;
         double startCoordY = 0.0;
@@ -124,6 +129,7 @@ public class NodeStructure : MonoBehaviour
             active.Remove(checkTile);
         }
     }
+    */
 }
 /*
 public class Astar
