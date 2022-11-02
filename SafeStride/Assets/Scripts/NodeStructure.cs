@@ -8,13 +8,14 @@ using System.Linq;
 
 public class WaypointNode : Node {
     public List<WaypointNode> connections;
-    public WaypointNode(double inlat, double inlon, double distance, double cost)
+    public WaypointNode(double inlat, double inlon, double cost)
     {
         double targetX, targetY;
         lat = inlat;
         lon = inlon;
         nodeType = NodeType.Waypoint;
         connections = new List<WaypointNode>();
+        double distance;
         double costDist = cost + distance;
     }
     
@@ -37,38 +38,13 @@ public class NodeStructure : MonoBehaviour
         Dictionary<int, List<WaypointNode>> connections = new Dictionary<int, List<WaypointNode>>();
         string execPath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
         string newPath = Path.GetFullPath(Path.Combine(execPath, @"..\..\Assets\Data\Intersections.txt"));
-
-        /*
-        if (!(File.Exists(newPath)))
-        {
-            UnityEngine.Debug.Log("Downloading intersections data.");
-            string m_Path = Application.dataPath;
-            ProcessStartInfo start = new ProcessStartInfo();
-            start.FileName = Path.GetFullPath(Path.Combine(m_Path, @"..\..\MapData\dist\OpenStreetMapInfo\OpenStreetMapInfo.exe"));
-            start.Arguments = "-u";
-            start.UseShellExecute = false;
-            start.RedirectStandardOutput = false;
-            using (Process process = Process.Start(start))
-            {
-            }
-            UnityEngine.Debug.Log("Done downloading data.");
-        }
-        else
-        {
-            UnityEngine.Debug.Log("Found the intersections data!");
-        }
-        */
-        
-        //Not sure why this was in twice, was causing errors ¯\_(ツ)_/¯
-        //List<WaypointNode> AStarNodes = new List<WaypointNode>();
-        //Dictionary<int, List<WaypointNode>> connections = new Dictionary<int, List<WaypointNode>>();
         
         UnityEngine.Debug.Log(newPath);
         IEnumerable<string> lines = File.ReadLines(newPath);
         foreach (string line in lines)
         {
             string[] nodeInfo = line.Split(',');
-            WaypointNode newNode = new WaypointNode(System.Convert.ToDouble(nodeInfo[0]), System.Convert.ToDouble(nodeInfo[1]), 0, 0);
+            WaypointNode newNode = new WaypointNode(System.Convert.ToDouble(nodeInfo[0]), System.Convert.ToDouble(nodeInfo[1]), 0);
             AStarNodes.Add(newNode);
             for (int i = 2; i < nodeInfo.Length; i++)
             {
@@ -90,30 +66,42 @@ public class NodeStructure : MonoBehaviour
         {
             foreach (WaypointNode node in way)
             {
+                WaypointNode startConnect = new WaypointNode();
+                startConnect = node;
+                startConnect.lat = way.FindIndex(x => x.Contains(startCoordY));
+                startConnect.lon = way[startConnect.lat].Find(startCoordX);
+                //end coordinates now
+                WaypointNode finishConnect = new WaypointNode();
+                finishConnect = node;
+                finishConnect.lat = way.FindIndex(x => x.Contains(endCoordY));
+                finishConnect.lon = way[startConnect.lat].Find(endCoordX);
+            
+                startConnect.distance = Math.Abs(endCoordX - node.lon) + Math.Abs(endCoordY - node.lat);
                 foreach (WaypointNode checknode in way)
                 {
                     if (node == checknode) continue;
                     if (node.connections.Contains(checknode)) continue;
                     node.connections.Add(checknode);
+
                     UnityEngine.Debug.Log("Linked (" + node.lat + "," + node.lon + ") to (" + checknode.lat + "," + checknode.lon + ")");
                 }
             }
+            /*
+            //searching for the starting coordinates
+            WaypointNode startConnect = new WaypointNode();
+            startConnect = node;
+            startConnect.lat = way.FindIndex(x => x.Contains(startCoordY));
+            startConnect.lon = way[startConnect.lat].Find(startCoordX);
+            //end coordinates now
+            WaypointNode finishConnect = new WaypointNode();
+            finishConnect = node;
+            finishConnect.lat = way.FindIndex(x => x.Contains(endCoordY));
+            finishConnect.lon = way[startConnect.lat].Find(endCoordX);
+            
+            startConnect.distance = Math.Abs(endCoordX - node.lon) + Math.Abs(endCoordY - node.lat); 
+            */
         }
-        //searching for the starting coordinates
-        //Dictionary<int, List<WaypointNode>> startConnect = new Dictionary<int, List<WaypointNode>>(connections);
-        List<WaypointNode> startConnect = new List<WaypointNode>(connections);
-        startConnect.lat = AStarNodes.FindIndex(x => x.Contains(startCoordY));
-        startConnect.lon = AStarNodes[startConnect.lat].Find(startCoordX);
-
-        //end coordinates now
-        //Dictionary<int, List<WaypointNode>> finishConnect = new Dictionary<int, List<WaypointNode>>(connections);
-        List<WaypointNode> finishConnect = new List<WaypointNode>(connections);
-        finishConnect.lat = AStarNodes.FindIndex(x => x.Contains(endCoordY));
-        finishConnect.lon = AStarNodes[finishConnect.lat].Find(endCoordX);
-
-        //finding distance between
-        startConnect.distance = Math.Abs(targetX - inlon) + Math.Abs(targetY - inlat);
-        
+       
         //making active and visited lists, populating the active list
         var active = new List<WaypointNode>();
         active.Add(startConnect);
@@ -143,41 +131,6 @@ public class NodeStructure : MonoBehaviour
             visited.Add(checkTile);
             active.Remove(checkTile);
         }
-    }
-}
-/*
-public class Astar
-{
-    private static List<locations> GetWalkable(List<WaypointNode> AStarNodes, locations currentLoc, locations targetLoc)
-    {
-        var possibleLoc = new List<locations>()
-        {
-            //new locations {lon,lat,Parent,Cost}
-            //new locations {ID = startID},
-
-        };
         
-
-        //possibleLoc.ForEach(locations => locations.SetDistance(targetLoc.lon, targetLoc.lat));
-        return possibleLoc 
-                .ToList();
-
     }
 }
-
-class locations
-{
-    public double lon { get; set; } 
-    public double lat { get; set; } 
-    public double cost { get; set; }
-    public double distance { get; set; }
-    public double costDist => cost + distance;
-    public int ID { get; set; } 
-    public locations Parent { get; set; }
-
-    public void SetDistance(double targetX, double targetY)
-    {
-        this.distance = Math.Abs(targetX - lon) + Math.Abs(targetY - lat);
-    }
-}
-*/
