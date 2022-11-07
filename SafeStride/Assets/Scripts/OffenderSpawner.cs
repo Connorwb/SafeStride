@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class OffenderSpawner : MonoBehaviour
 {
-    [SerializeField]
-    public GameObject offenderDot;
     
     // Start is called before the first frame update
     void Start()
     {
-        DataDownloader downMan = new DataDownloader();
+
     }
 
     // Update is called once per frame

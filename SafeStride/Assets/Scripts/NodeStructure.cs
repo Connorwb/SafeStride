@@ -8,11 +8,6 @@ using System.Linq;
 
 public class NodeStructure : MonoBehaviour
 {
-    private void Start()
-    {
-        
-    }
-
     void Start()
     {
 

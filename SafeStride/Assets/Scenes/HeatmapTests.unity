@@ -218,7 +218,6 @@ GameObject:
   - component: {fileID: 475375239}
   - component: {fileID: 475375238}
   - component: {fileID: 475375240}
-  - component: {fileID: 475375241}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -268,18 +267,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   map: {fileID: 1142566430}
   whiteHex: {fileID: 11400000, guid: e52f029e2792dca43834be6d69f978a0, type: 2}
---- !u!114 &475375241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 475375237}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d85a0e3f50d8c3468fde3f86bfb351a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   offenderDot: {fileID: 3783356753783913946, guid: 7597f0034a332cd44bd56e06218f09d3,
     type: 3}
 --- !u!1 &1142566426
