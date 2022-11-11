@@ -3,6 +3,7 @@
 	using System.Collections;
 	using Mapbox.Unity.Location;
 	using UnityEngine;
+	using UnityEngine.Tilemaps;
 
 	public class InitializeMapWithLocationProvider : MonoBehaviour
 	{
@@ -10,11 +11,23 @@
 		AbstractMap _map;
 
 		ILocationProvider _locationProvider;
-    
+
+		[SerializeField]
+		private Tilemap map;
+
+		[SerializeField]
+		private TileBase whiteHex;
+
+		[SerializeField]
+		public GameObject offenderDot;
+
+		private HeatmapManager heatManager;
+
 		private void Awake()
 		{
 			// Prevent double initialization of the map. 
 			_map.InitializeOnStart = false;
+			heatManager = new HeatmapManager(map, whiteHex, offenderDot);
 		}
 
 		protected virtual IEnumerator Start()
@@ -28,6 +41,7 @@
 		{
 			_locationProvider.OnLocationUpdated -= LocationProvider_OnLocationUpdated;
 			_map.Initialize(location.LatitudeLongitude, _map.AbsoluteZoom);
+			heatManager.DisplayInArea((float) _locationProvider.CurrentLocation.LatitudeLongitude.x, (float)_locationProvider.CurrentLocation.LatitudeLongitude.y, 0.05f);
 		}
 	}
 }
