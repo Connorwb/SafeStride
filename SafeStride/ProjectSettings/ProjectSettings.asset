@@ -752,6 +752,8 @@ PlayerSettings:
     m_VersionName: 
   apiCompatibilityLevel: 6
   activeInputHandler: 0
+  framebufferDepthMemorylessMode: 0
+  qualitySettingsNames: []
   cloudProjectId: 
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []

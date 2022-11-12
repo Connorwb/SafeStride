@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Linq;
 
+
 public class WaypointNode : Node {
     public List<WaypointNode> connections;
     public WaypointNode(double inlat, double inlon, double cost)
@@ -20,6 +21,7 @@ public class WaypointNode : Node {
     }
     
 }
+
 
 public class NodeStructure : MonoBehaviour
 {
@@ -134,3 +136,4 @@ public class NodeStructure : MonoBehaviour
         
     }
 }
+

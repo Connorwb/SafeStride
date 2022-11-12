@@ -3,6 +3,7 @@ from OSMPythonTools.nominatim import Nominatim
 import time
 import sys
 import os
+import json
 nominatim = Nominatim()
 areaId = nominatim.query('Volusia County, Florida, United States').areaId()
 overpass = Overpass()
@@ -12,7 +13,7 @@ result = overpass.query(overpassQueryBuilder(area=areaId, elementType='way', sel
 print("Opening Data Folder")
 time.sleep(2)
 if str(sys.argv).__contains__("-d"):
-    Downloads = open("..\\SafeStride\\Assets\\Data\\Intersections.txt", "w+")
+    print("Making JSON files")
 elif str(sys.argv).__contains__("-t"):
     Downloads = open("..\\..\\..\\SafeStride\\Assets\\Data\\Intersections.txt", "w+")
 elif str(sys.argv).__contains__("-u"):
@@ -32,7 +33,22 @@ for way in result.elements():
             doublesIDs[node.id()] = doublesIDs[node.id()] + "," + str(way.id())
         else:
             nodeIDs.update({node.id(): str(way.id())})
-for key, value in doublesIDs.items():
-    print(value)
-    Downloads.write(value + "\n")
+if str(sys.argv).__contains__("-d"):
+    for key, value in doublesIDs.items():
+        Downloads = open(".\\json\\Intersections" + str(key) + ".json", "w+")
+        stringArray = value.split(",")
+        for i in range(2, len(stringArray)):
+            stringArray[i] = int(stringArray[i])
+        towrite = {
+            "nodeID": key,
+            "latitude": float(stringArray[0]),
+            "longitude": float(stringArray[1]),
+            "connections": stringArray[2:]
+        }
+        json_object = json.dumps(towrite, indent=4)
+        Downloads.write(json_object + "\n")
+else:
+    for key, value in doublesIDs.items():
+        print(value)
+        Downloads.write(value + "\n")
 print("ALL DONE!")
