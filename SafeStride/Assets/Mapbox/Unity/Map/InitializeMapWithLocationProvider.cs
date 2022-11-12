@@ -41,7 +41,7 @@
 		{
 			_locationProvider.OnLocationUpdated -= LocationProvider_OnLocationUpdated;
 			_map.Initialize(location.LatitudeLongitude, _map.AbsoluteZoom);
-			heatManager.DisplayInArea((float) _locationProvider.CurrentLocation.LatitudeLongitude.x, (float)_locationProvider.CurrentLocation.LatitudeLongitude.y, 0.05f);
+			heatManager.DisplayInArea((float) _locationProvider.CurrentLocation.LatitudeLongitude.x, (float)_locationProvider.CurrentLocation.LatitudeLongitude.y, _map.Zoom);
 		}
 	}
 }
