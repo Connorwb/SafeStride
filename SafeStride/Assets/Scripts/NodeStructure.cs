@@ -7,22 +7,6 @@ using System.Reflection;
 using System.Linq;
 
 
-public class WaypointNode : Node {
-    public List<WaypointNode> connections;
-    public WaypointNode(double inlat, double inlon, double cost)
-    {
-        double targetX, targetY;
-        lat = inlat;
-        lon = inlon;
-        nodeType = NodeType.Waypoint;
-        connections = new List<WaypointNode>();
-        double distance;
-        double costDist = cost + distance;
-    }
-    
-}
-
-
 public class NodeStructure : MonoBehaviour
 {
     void Start()
