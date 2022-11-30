@@ -3,6 +3,7 @@
 	using System.Collections;
 	using Mapbox.Unity.Location;
 	using UnityEngine;
+	using UnityEngine.UI;
 	using UnityEngine.Tilemaps;
 
 	public class InitializeMapWithLocationProvider : MonoBehaviour
@@ -21,13 +22,16 @@
 		[SerializeField]
 		public GameObject offenderDot;
 
+		[SerializeField]
+		Button button;
+
 		private HeatmapManager heatManager;
 
 		private void Awake()
 		{
 			// Prevent double initialization of the map. 
 			_map.InitializeOnStart = false;
-			heatManager = new HeatmapManager(map, whiteHex, offenderDot);
+			heatManager = new HeatmapManager(map, whiteHex, offenderDot, button);
 		}
 
 		protected virtual IEnumerator Start()
