@@ -67,9 +67,12 @@ public class HeatmapManager
         spawnedNodes.Clear();
         foreach (OffenderNode spawnNode in offenders)
         {
-            spawnedNodes.Add(GameObject.Instantiate(offenderDot, new Vector3((spawnNode.lon - loncenter) * (horzExtent * 2 / width), 0.50f, (spawnNode.lat - latcenter) * (vertExtent * 2 / (width * w2h))), Quaternion.Euler(90, 0, 0)));
+            GameObject obj = GameObject.Instantiate(offenderDot, new Vector3((spawnNode.lon - loncenter) * (horzExtent * 2 / width), 0.50f, (spawnNode.lat - latcenter) * (vertExtent * 2 / (width * w2h))), Quaternion.Euler(90, 0, 0));
+            obj.SetActive(false);
+            spawnedNodes.Add(obj);
         }
 
+        map.gameObject.SetActive(false);
         int tileWidth = 95;
         for (int i = -1 * (int)((w2h) * (tileWidth/3)) ; i < (int)((w2h) * tileWidth); i++)
         {
