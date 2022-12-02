@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
 using System.Threading.Tasks;
+using Mapbox.Unity.Map;
 
 public class HeatmapManager
 {
@@ -12,6 +13,7 @@ public class HeatmapManager
     TileBase whiteHex;
     GameObject offenderDot;
     List<GameObject> spawnedNodes;
+    AbstractMap map;
     public bool init;
 
     // Start is called before the first frame update
@@ -50,17 +52,17 @@ public class HeatmapManager
         this.init = false;
     }
 
-    public IEnumerator DisplayInArea(float latcenter, float loncenter, float zoom)
+    public IEnumerator DisplayInArea(AbstractMap _map, float latcenter, float loncenter, float zoom)
     {
         UnityEngine.Debug.Log("Initialized");
         init = true;
-        float width = 1079.03f * Mathf.Exp(-.692919f * zoom) - 0.0000149912f;
+        float width = (1079.03f * Mathf.Exp(-.692919f * zoom) - 0.0000149912f)/1.6f;
         //var horzExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
         //var vertExtent = Camera.main.orthographicSize;
         //float w2h = Screen.height / Screen.width;
 
-        float horzExtent = 150f;
-        float vertExtent = 174f;
+        //float horzExtent = 150f;
+        //float vertExtent = 174f;
         float w2h = 2f;
         //UnityEngine.Debug.Log(horzExtent);
         //UnityEngine.Debug.Log(vertExtent);
@@ -82,7 +84,7 @@ public class HeatmapManager
         }
         foreach (OffenderNode spawnNode in downMan.GOWrequest)
         {
-            GameObject obj = GameObject.Instantiate(offenderDot, new Vector3((spawnNode.lon - loncenter) * (horzExtent * 2 / width), 0.50f, (spawnNode.lat - latcenter) * (vertExtent * 2 / (width * w2h))), Quaternion.Euler(90, 0, 0));
+            GameObject obj = GameObject.Instantiate(offenderDot, _map.GeoToWorldPosition(new Mapbox.Utils.Vector2d(spawnNode.lat, spawnNode.lon)) + new Vector3(0, 0.01f, 0), Quaternion.Euler(90, 0, 0));
             obj.SetActive(true);
             spawnedNodes.Add(obj);
         }
@@ -94,23 +96,26 @@ public class HeatmapManager
         {
             for (int i = -1 * (int)((w2h) * (tileWidth / 3)); i < (int)((w2h) * tileWidth); i++)
             {
-                double risk = 0;
-                Vector3 pos = tilemap.CellToLocal(new Vector3Int(i, ii, 0));
-                float hexlon = 1.25f * ((pos.x / horzExtent) * (width)) + loncenter;
-                float hexlat = 1.25f * ((pos.y / vertExtent) * (width * w2h)) + latcenter;
-                //foreach (GameObject spawnNode in spawnedNodes)
-                //{
-                //    risk += 1/ System.Math.Pow(Vector3.Distance(pos, spawnNode.transform.localPosition), 2);
-                //}
-                foreach (OffenderNode analysis in downMan.GOWrequest)
+                float risk = 0;
+                Vector3 pos = tilemap.GetCellCenterWorld(new Vector3Int(i, ii, 0));
+                //Vector3 pos = tilemap.CellToLocal(new Vector3Int(i, ii, 0));
+                //Mapbox.Utils.Vector2d conv = _map.WorldToGeoPosition(pos);
+                //UnityEngine.Debug.Log(conv);
+                //UnityEngine.Debug.Log(_map.CenterLatitudeLongitude);
+                //float hexlon = (float) conv.y;
+                //float hexlat = (float) conv.x;
+                foreach (GameObject spawnNode in spawnedNodes)
                 {
-                    risk += 1 / System.Math.Pow(analysis.DegreeDistanceFrom(hexlat, hexlon)*1000,1.5);
+                    risk += Mathf.Pow((spawnNode.transform.position - pos).magnitude/3, -1.5f);
                 }
-                float frisk = (float)risk;
+                //foreach (OffenderNode analysis in downMan.GOWrequest)
+                //{
+                //    risk += 1 / System.Math.Pow(analysis.DegreeDistanceFrom(hexlat, hexlon)*1000,1.5);
+                //}
                 //UnityEngine.Debug.Log(hexlat + " " + hexlon + " " + frisk);
                 tilemap.SetTile(new Vector3Int(i, ii, 0), whiteHex);
                 tilemap.SetTileFlags(new Vector3Int(i, ii, 0), TileFlags.None);
-                tilemap.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - frisk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((frisk-.4f)/6, 0.0f))));
+                tilemap.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - risk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((risk-.4f)/6, 0.0f))));
             }
             if (next < 0)
             {
@@ -123,7 +128,7 @@ public class HeatmapManager
                 next++;
                 next = 0 - next;
             }
-            if (next > 0) yield return new WaitForSeconds(0.01f);
+            if (next > 0) yield return new WaitForSeconds(0.25f);
         }
     }
 

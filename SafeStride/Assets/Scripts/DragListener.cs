@@ -68,7 +68,7 @@ public class DragListener : MonoBehaviour
         Camera.main.transform.SetPositionAndRotation(cameraOrigin, Camera.main.transform.rotation);
         if (tilemap.gameObject.activeSelf)
         {
-            yield return StartCoroutine(heatManager.DisplayInArea((float)_map.WorldToGeoPosition(dragNew).x, (float)_map.WorldToGeoPosition(dragNew).y, _map.Zoom));
+            yield return StartCoroutine(heatManager.DisplayInArea(_map, (float)_map.WorldToGeoPosition(dragNew).x, (float)_map.WorldToGeoPosition(dragNew).y, _map.Zoom));
         } 
         else
         {
@@ -83,7 +83,7 @@ public class DragListener : MonoBehaviour
         {
             Vector3 dragOld = cameraOrigin;
             dragOld.y = 0;
-            StartCoroutine(heatManager.DisplayInArea((float)_map.WorldToGeoPosition(dragOld).x, (float)_map.WorldToGeoPosition(dragOld).y, _map.Zoom));
+            StartCoroutine(heatManager.DisplayInArea(_map, (float)_map.WorldToGeoPosition(dragOld).x, (float)_map.WorldToGeoPosition(dragOld).y, _map.Zoom));
         }
         heatManager.toggleHeatmap();
     }
