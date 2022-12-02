@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Tilemaps;
+using System.Threading.Tasks;
 
 public class HeatmapManager
 {
     Button button;
-    Tilemap map;
+    Tilemap tilemap;
     TileBase whiteHex;
     GameObject offenderDot;
     List<GameObject> spawnedNodes;
+    public bool init;
 
     // Start is called before the first frame update
     /*void Start()
@@ -39,17 +41,19 @@ public class HeatmapManager
             }
         }
     }*/
-    public HeatmapManager(Tilemap map, TileBase whiteHex, GameObject offenderDot, Button button)
+    public HeatmapManager(Tilemap map, TileBase whiteHex, GameObject offenderDot)
     {
-        this.map = map;
+        this.tilemap = map;
         this.whiteHex = whiteHex;
         this.offenderDot = offenderDot;
         this.spawnedNodes = new List<GameObject>();
-        button.onClick.AddListener(toggleHeatmap);
+        this.init = false;
     }
 
-    public void DisplayInArea(float latcenter, float loncenter, float zoom)
+    public IEnumerator DisplayInArea(float latcenter, float loncenter, float zoom)
     {
+        UnityEngine.Debug.Log("Initialized");
+        init = true;
         float width = 1079.03f * Mathf.Exp(-.692919f * zoom) - 0.0000149912f;
         //var horzExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
         //var vertExtent = Camera.main.orthographicSize;
@@ -62,46 +66,70 @@ public class HeatmapManager
         //UnityEngine.Debug.Log(vertExtent);
         //UnityEngine.Debug.Log(w2h);
         //Vector3 centroid = Camera.main.transform.position;
+        if (spawnedNodes.Count > 0)
+        {
+            foreach (GameObject node in spawnedNodes)
+            {
+                node.Destroy();
+            }
+            spawnedNodes.Clear();
+        }
         DataDownloader downMan = new DataDownloader();
-        List<OffenderNode> offenders = downMan.GetOffendersWithin(latcenter - (width * w2h / 2), loncenter - (width/2), latcenter + (width * w2h / 2), loncenter + (width / 2), 0);
-        spawnedNodes.Clear();
-        foreach (OffenderNode spawnNode in offenders)
+        Task.Factory.StartNew(() => Task.Factory.StartNew(() => downMan.GetOffendersWithin(latcenter - (width * w2h / 2), loncenter - (width / 2), latcenter + (width * w2h / 2), loncenter + (width / 2), 0)));
+        while (downMan.GOWrequest == null)
+        {
+            yield return new WaitForSeconds(0.1f);
+        }
+        foreach (OffenderNode spawnNode in downMan.GOWrequest)
         {
             GameObject obj = GameObject.Instantiate(offenderDot, new Vector3((spawnNode.lon - loncenter) * (horzExtent * 2 / width), 0.50f, (spawnNode.lat - latcenter) * (vertExtent * 2 / (width * w2h))), Quaternion.Euler(90, 0, 0));
-            obj.SetActive(false);
+            obj.SetActive(true);
             spawnedNodes.Add(obj);
         }
 
-        map.gameObject.SetActive(false);
+        yield return new WaitForSeconds(0.001f);
         int tileWidth = 95;
-        for (int i = -1 * (int)((w2h) * (tileWidth/3)) ; i < (int)((w2h) * tileWidth); i++)
+        int next = -1;
+        for (int ii = 0; ii < tileWidth;)
         {
-            for (int ii = -1 * tileWidth; ii < tileWidth; ii++)
+            for (int i = -1 * (int)((w2h) * (tileWidth / 3)); i < (int)((w2h) * tileWidth); i++)
             {
                 double risk = 0;
-                Vector3 pos = map.CellToLocal(new Vector3Int(i, ii, 0));
+                Vector3 pos = tilemap.CellToLocal(new Vector3Int(i, ii, 0));
                 float hexlon = 1.25f * ((pos.x / horzExtent) * (width)) + loncenter;
                 float hexlat = 1.25f * ((pos.y / vertExtent) * (width * w2h)) + latcenter;
                 //foreach (GameObject spawnNode in spawnedNodes)
                 //{
                 //    risk += 1/ System.Math.Pow(Vector3.Distance(pos, spawnNode.transform.localPosition), 2);
                 //}
-                foreach (OffenderNode analysis in offenders)
+                foreach (OffenderNode analysis in downMan.GOWrequest)
                 {
                     risk += 1 / System.Math.Pow(analysis.DegreeDistanceFrom(hexlat, hexlon)*1000,1.5);
                 }
                 float frisk = (float)risk;
                 //UnityEngine.Debug.Log(hexlat + " " + hexlon + " " + frisk);
-                map.SetTile(new Vector3Int(i, ii, 0), whiteHex);
-                map.SetTileFlags(new Vector3Int(i, ii, 0), TileFlags.None);
-                map.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - frisk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((frisk-.4f)/6, 0.0f))));
+                tilemap.SetTile(new Vector3Int(i, ii, 0), whiteHex);
+                tilemap.SetTileFlags(new Vector3Int(i, ii, 0), TileFlags.None);
+                tilemap.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - frisk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((frisk-.4f)/6, 0.0f))));
             }
+            if (next < 0)
+            {
+                ii = next;
+                next = 0 - next;
+            } 
+            else
+            {
+                ii = next;
+                next++;
+                next = 0 - next;
+            }
+            if (next > 0) yield return new WaitForSeconds(0.01f);
         }
     }
 
     public void toggleHeatmap()
     {
-        map.gameObject.SetActive(!(map.gameObject.activeSelf));
+        tilemap.gameObject.SetActive(!(tilemap.gameObject.activeSelf));
         foreach (GameObject node in spawnedNodes)
         {
             node.SetActive(!(node.activeSelf));

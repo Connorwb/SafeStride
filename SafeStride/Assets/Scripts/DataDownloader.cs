@@ -1,9 +1,18 @@
 using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 public class DataDownloader
 {
+    public List<WaypointNode> GWWrequest;
+    public List<OffenderNode> GOWrequest;
+    
+    public DataDownloader()
+    {
+        GWWrequest = null;
+        GOWrequest = null;
+    }
     public string ListDatabases()
     {
         string retString = "";
@@ -18,7 +27,7 @@ public class DataDownloader
         return retString;
     }
 
-    public List<WaypointNode> GetWaypointsWithin(double latmin, double lonmin, double latmax, double lonmax, double buffer)
+    public void GetWaypointsWithin(double latmin, double lonmin, double latmax, double lonmax, double buffer)
     {
         List<WaypointNode> waypoints = new List<WaypointNode>();
         MongoClient dbClient = new MongoClient("mongodb+srv://bramhalc:qAGBTrJ6U4McuEDl@safestride.pum3uy6.mongodb.net/test");
@@ -39,10 +48,10 @@ public class DataDownloader
             }
             waypoints.Add(newnode);
         }
-        return waypoints;
+        GWWrequest = waypoints;
     }
 
-    public List<OffenderNode> GetOffendersWithin(double latmin, double lonmin, double latmax, double lonmax, double buffer)
+    public void GetOffendersWithin(double latmin, double lonmin, double latmax, double lonmax, double buffer)
     {
         List<OffenderNode> waypoints = new List<OffenderNode>();
         MongoClient dbClient = new MongoClient("mongodb+srv://bramhalc:qAGBTrJ6U4McuEDl@safestride.pum3uy6.mongodb.net/test");
@@ -58,6 +67,6 @@ public class DataDownloader
             OffenderNode newnode = new OffenderNode(document.GetValue("latitude").AsDouble, document.GetValue("longitude").AsDouble, (document.GetValue("TRANSIENT").AsString == "TRUE"));
             waypoints.Add(newnode);
         }
-        return waypoints;
+        GOWrequest = waypoints;
     }
 }
