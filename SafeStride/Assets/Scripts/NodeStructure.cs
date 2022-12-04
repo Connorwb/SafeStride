@@ -30,7 +30,7 @@ public class NodeStructure : MonoBehaviour
         foreach (string line in lines)
         {
             string[] nodeInfo = line.Split(',');
-            WaypointNode newNode = new WaypointNode(System.Convert.ToDouble(nodeInfo[0]), System.Convert.ToDouble(nodeInfo[1]), 0);
+            WaypointNode newNode = new WaypointNode(System.Convert.ToDouble(nodeInfo[0]), System.Convert.ToDouble(nodeInfo[1]));
             AStarNodes.Add(newNode);
             for (int i = 2; i < nodeInfo.Length; i++)
             {
@@ -52,6 +52,7 @@ public class NodeStructure : MonoBehaviour
         {
             foreach (WaypointNode node in way)
             {
+               /*
                 WaypointNode startConnect = new WaypointNode();
                 startConnect = node;
                 startConnect.lat = way.FindIndex(x => x.Contains(startCoordY));
@@ -63,6 +64,7 @@ public class NodeStructure : MonoBehaviour
                 finishConnect.lon = way[startConnect.lat].Find(endCoordX);
             
                 startConnect.distance = Math.Abs(endCoordX - node.lon) + Math.Abs(endCoordY - node.lat);
+                */
                 foreach (WaypointNode checknode in way)
                 {
                     if (node == checknode) continue;
@@ -87,7 +89,7 @@ public class NodeStructure : MonoBehaviour
             startConnect.distance = Math.Abs(endCoordX - node.lon) + Math.Abs(endCoordY - node.lat); 
             */
         }
-       
+        /*
         //making active and visited lists, populating the active list
         var active = new List<WaypointNode>();
         active.Add(startConnect);
@@ -117,6 +119,7 @@ public class NodeStructure : MonoBehaviour
             visited.Add(checkTile);
             active.Remove(checkTile);
         }
+        */
         
     }
 }

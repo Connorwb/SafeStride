@@ -8,8 +8,12 @@ using UnityEngine;
 using UnityEngine.Networking;
 using System.Collections;
 
-var baseAddress = new Uri("https://api.openrouteservice.org");
 
+//var baseAddress = new Uri("https://api.mapbox.com/directions/v5/{profile}/{coordinates}");
+//double longitude;
+//double latitude;
+
+/*
 using (var httpClient = new HttpClient{ BaseAddress = baseAddress })
 {
   httpClient.DefaultRequestHeaders.Clear();
@@ -29,7 +33,7 @@ using (var httpClient = new HttpClient{ BaseAddress = baseAddress })
   }
 }
 
-public class Astar : MonoBehavior
+public class Astar : MonoBehaviour
 {
   private const string URL = "https://api.openrouteservice.org/v2/directions/foot-walking/json";
   private const string HOST = "https://api.openrouteservice.org";
@@ -58,7 +62,7 @@ public class Astar : MonoBehavior
         }
     }
 }
-
+*/
 //https://api.openrouteservice.org/v2/directions/foot-walking?api_key=your-api-key&start=8.681495,49.41461&end=8.687872,49.420318
 
 
