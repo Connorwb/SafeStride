@@ -81,6 +81,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 			}
 			var _directionResource = new DirectionResource(wp, RoutingProfile.Walking);
 			_directionResource.Steps = true;
+			//_directionResource.banner_instructions = true;
 			_directions.Query(_directionResource, HandleDirectionsResponse);
 		}
 
