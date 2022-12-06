@@ -23,6 +23,15 @@ public class DragListener : MonoBehaviour
     [SerializeField]
     Button button;
 
+    [SerializeField]
+    GameObject hidebutton1;
+
+    [SerializeField]
+    GameObject hidebutton2;
+
+    [SerializeField]
+    GameObject hidebutton3;
+
     private HeatmapManager heatManager;
 
     public float dragSpeed = 2;
@@ -57,7 +66,7 @@ public class DragListener : MonoBehaviour
 
     IEnumerator Replace()
     {
-        if (!(IsPointerOverUIObject())) yield break;
+        if (IsPointerOverUIObject()) yield break;
         var v3 = Input.mousePosition;
         v3.y = 0.0f;
         Vector3 dragNew = Camera.main.transform.position;
@@ -89,6 +98,9 @@ public class DragListener : MonoBehaviour
             routine = StartCoroutine(heatManager.DisplayInArea(_map, (float)_map.WorldToGeoPosition(dragOld).x, (float)_map.WorldToGeoPosition(dragOld).y, _map.Zoom));
         }
         heatManager.toggleHeatmap();
+        hidebutton1.SetActive(!(hidebutton1.activeSelf));
+        hidebutton2.SetActive(!(hidebutton2.activeSelf));
+        hidebutton3.SetActive(!(hidebutton3.activeSelf));
     }
 
     public static bool IsPointerOverUIObject()

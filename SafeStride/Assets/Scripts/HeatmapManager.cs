@@ -54,6 +54,7 @@ public class HeatmapManager
 
     public IEnumerator DisplayInArea(AbstractMap _map, float latcenter, float loncenter, float zoom)
     {
+        if (zoom > 14) zoom = 14;
         init = true;
         float width = (1079.03f * Mathf.Exp(-.692919f * zoom) - 0.0000149912f)/1.6f;
         //var horzExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
@@ -106,7 +107,7 @@ public class HeatmapManager
                 //float hexlat = (float) conv.x;
                 foreach (GameObject spawnNode in spawnedNodes)
                 {
-                    risk += Mathf.Pow((spawnNode.transform.position - pos).magnitude/3, -1.5f);
+                    risk += Mathf.Pow((spawnNode.transform.position - pos).magnitude/20, -1.5f);
                 }
                 //foreach (OffenderNode analysis in downMan.GOWrequest)
                 //{
@@ -115,7 +116,7 @@ public class HeatmapManager
                 //UnityEngine.Debug.Log(hexlat + " " + hexlon + " " + frisk);
                 tilemap.SetTile(new Vector3Int(i, ii, 0), whiteHex);
                 tilemap.SetTileFlags(new Vector3Int(i, ii, 0), TileFlags.None);
-                tilemap.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - risk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((risk-.4f)/6, 0.0f))));
+                tilemap.SetColor(new Vector3Int(i, ii, 0), new Color(1.0f, 1.0f - risk/6, 0.0f, System.Math.Min(0.35f, System.Math.Max((risk-.5f)/6, 0.0f))));
             }
             if (next < 0)
             {
