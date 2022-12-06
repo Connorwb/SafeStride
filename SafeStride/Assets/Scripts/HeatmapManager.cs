@@ -54,7 +54,6 @@ public class HeatmapManager
 
     public IEnumerator DisplayInArea(AbstractMap _map, float latcenter, float loncenter, float zoom)
     {
-        UnityEngine.Debug.Log("Initialized");
         init = true;
         float width = (1079.03f * Mathf.Exp(-.692919f * zoom) - 0.0000149912f)/1.6f;
         //var horzExtent = Camera.main.orthographicSize * Screen.width / Screen.height;
@@ -72,6 +71,7 @@ public class HeatmapManager
         {
             foreach (GameObject node in spawnedNodes)
             {
+                tilemap.ClearAllTiles();
                 node.Destroy();
             }
             spawnedNodes.Clear();
@@ -128,7 +128,7 @@ public class HeatmapManager
                 next++;
                 next = 0 - next;
             }
-            if (next > 0) yield return new WaitForSeconds(0.25f);
+            if (next > 0) yield return new WaitForSeconds(0.125f);
         }
     }
 
