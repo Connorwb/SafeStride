@@ -80,7 +80,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 				wp[i] = _waypoints[i].GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
 			}
 			var _directionResource = new DirectionResource(wp, RoutingProfile.Walking);
-			_directionResource.steps = true;
+			_directionResource.Steps = true;
 			//_directionResource.banner_instructions = true;
 			_directions.Query(_directionResource, HandleDirectionsResponse);
 		}
