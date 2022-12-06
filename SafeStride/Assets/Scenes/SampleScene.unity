@@ -503,7 +503,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 0.9764151, b: 0.9764151, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -3812,6 +3812,9 @@ MonoBehaviour:
   offenderDot: {fileID: 3783356753783913946, guid: 7597f0034a332cd44bd56e06218f09d3,
     type: 3}
   button: {fileID: 1095375324}
+  hidebutton1: {fileID: 314354354}
+  hidebutton2: {fileID: 1641746771}
+  hidebutton3: {fileID: 2094417958}
   dragSpeed: 2
 --- !u!1 &2094417958
 GameObject:
