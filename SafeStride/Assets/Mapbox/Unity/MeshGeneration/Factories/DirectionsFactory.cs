@@ -21,6 +21,9 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 		[SerializeField]
 		Material _material;
 
+		[Geocode]
+		string[] _coordinates;
+
 		[SerializeField]
 		Transform[] _waypoints;
 		private List<Vector3> _cachedWaypoints;
@@ -80,9 +83,16 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 				wp[i] = _waypoints[i].GetGeoPosition(_map.CenterMercator, _map.WorldRelativeScale);
 			}
 			var _directionResource = new DirectionResource(wp, RoutingProfile.Walking);
-			_directionResource.steps = true;
-			//_directionResource.banner_instructions = true;
+			_directionResource.Steps = true;
+			//_directionResource.bannerInstructions = true;
 			_directions.Query(_directionResource, HandleDirectionsResponse);
+			/*
+			_waypoints = new Vector2d[_coordinates.Length];
+        	for (int i = 0; i < _coordinates.Length; i++)
+        	{
+        	    _waypoints[i] = Conversions.StringToLatLon(_coordinates[i]);
+        	}
+			*/
 		}
 
 		public IEnumerator QueryTimer()
