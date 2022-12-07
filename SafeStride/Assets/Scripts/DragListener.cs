@@ -39,6 +39,7 @@ public class DragListener : MonoBehaviour
     GameObject loc2;
 
     private Mapbox.Utils.Vector2d bruh;
+    private Mapbox.Utils.Vector2d bruh2;
 
     private HeatmapManager heatManager;
 
@@ -53,7 +54,12 @@ public class DragListener : MonoBehaviour
         button.onClick.AddListener(toggleHeatmap);
         heatManager = new HeatmapManager(tilemap, whiteHex, offenderDot);
         tilemap.gameObject.SetActive(false);
-        bruh = _map.WorldToGeoPosition(loc1.transform.position);
+        Vector3 firsts = loc1.transform.position;
+        firsts.y = 0;
+        bruh = _map.WorldToGeoPosition(firsts);
+        Vector3 seconds = loc2.transform.position;
+        seconds.y = 0;
+        bruh2 = _map.WorldToGeoPosition(seconds);
     }
 
     void Update()
@@ -83,9 +89,22 @@ public class DragListener : MonoBehaviour
         Vector3 dragOld = cameraOrigin;
         dragOld.y = 0;
         Mapbox.Utils.Vector2d translateVec =  _map.WorldToGeoPosition(dragNew) - _map.WorldToGeoPosition(dragOld);
-        loc1.SetPositionAndRotation(_map.GeoToWorldPosition(bruh), loc1.transform.orientation);
         _map.UpdateMap(translateVec + _map.CenterLatitudeLongitude);
         Camera.main.transform.SetPositionAndRotation(cameraOrigin, Camera.main.transform.rotation);
+        if (!(float.IsNaN(_map.GeoToWorldPosition(bruh).x))) {
+            loc1.transform.SetPositionAndRotation(_map.GeoToWorldPosition(bruh) + new Vector3(0,0.2f,0), loc1.transform.rotation);
+        } else {
+            Vector3 firsts = loc1.transform.position;
+            firsts.y = 0;
+            bruh = _map.WorldToGeoPosition(firsts);
+        }
+        if (!(float.IsNaN(_map.GeoToWorldPosition(bruh2).x))) {
+            loc2.transform.SetPositionAndRotation(_map.GeoToWorldPosition(bruh2) + new Vector3(0,0.2f,0), loc2.transform.rotation);
+        } else {
+            Vector3 seconds = loc2.transform.position;
+            seconds.y = 0;
+            bruh2 = _map.WorldToGeoPosition(seconds);
+        }
         if (tilemap.gameObject.activeSelf)
         {
             if (routine != null) StopCoroutine(routine);

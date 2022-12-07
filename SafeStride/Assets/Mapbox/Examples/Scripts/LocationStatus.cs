@@ -27,6 +27,12 @@
 		{
 			Location currLoc = _locationProvider.CurrentLocation;
 
+			if (_locationProvider == null)
+    		{
+    		    _statusText.text = "ERROR: _locationProvider is null";
+    	    return;
+    		}
+			
 			if (currLoc.IsLocationServiceInitializing)
 			{
 				_statusText.text = "location services are initializing";
