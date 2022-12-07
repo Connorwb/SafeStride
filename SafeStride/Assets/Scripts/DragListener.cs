@@ -32,6 +32,14 @@ public class DragListener : MonoBehaviour
     [SerializeField]
     GameObject hidebutton3;
 
+    [SerializeField]
+    GameObject loc1;
+
+    [SerializeField]
+    GameObject loc2;
+
+    private Mapbox.Utils.Vector2d bruh;
+
     private HeatmapManager heatManager;
 
     public float dragSpeed = 2;
@@ -45,6 +53,7 @@ public class DragListener : MonoBehaviour
         button.onClick.AddListener(toggleHeatmap);
         heatManager = new HeatmapManager(tilemap, whiteHex, offenderDot);
         tilemap.gameObject.SetActive(false);
+        bruh = _map.WorldToGeoPosition(loc1.transform.position);
     }
 
     void Update()
@@ -74,6 +83,7 @@ public class DragListener : MonoBehaviour
         Vector3 dragOld = cameraOrigin;
         dragOld.y = 0;
         Mapbox.Utils.Vector2d translateVec =  _map.WorldToGeoPosition(dragNew) - _map.WorldToGeoPosition(dragOld);
+        loc1.SetPositionAndRotation(_map.GeoToWorldPosition(bruh), loc1.transform.orientation);
         _map.UpdateMap(translateVec + _map.CenterLatitudeLongitude);
         Camera.main.transform.SetPositionAndRotation(cameraOrigin, Camera.main.transform.rotation);
         if (tilemap.gameObject.activeSelf)

@@ -32,10 +32,11 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 		[Range(1,10)]
 		private float UpdateFrequency = 2;
 
-
-
 		private Directions _directions;
+
 		private int _counter;
+
+		//AbstractMap map = FindObjectOfType<AbstractMap>();
 
 		GameObject _directionsGO;
 		private bool _recalculateNext;
@@ -53,6 +54,7 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 
 		public void Start()
 		{
+			//gameObject.Find("NameOfTheGameObjectTarget").GetComponent<NameOfTheScript>().NameOfTheProperty = ...;
 			_cachedWaypoints = new List<Vector3>(_waypoints.Length);
 			foreach (var item in _waypoints)
 			{
@@ -76,6 +78,9 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 
 		void Query()
 		{
+			//var inputFieldSt = gameObject.GetComponent<StartField>();
+			//inputFieldSt = inputFieldSt.text;
+
 			var count = _waypoints.Length;
 			var wp = new Vector2d[count];
 			for (int i = 0; i < count; i++)
@@ -84,8 +89,9 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 			}
 			var _directionResource = new DirectionResource(wp, RoutingProfile.Walking);
 			_directionResource.Steps = true;
-			//_directionResource.bannerInstructions = true;
-			_directions.Query(_directionResource, HandleDirectionsResponse);
+			var response = _directions.Query(_directionResource, HandleDirectionsResponse);
+
+
 			/*
 			_waypoints = new Vector2d[_coordinates.Length];
         	for (int i = 0; i < _coordinates.Length; i++)
@@ -133,6 +139,10 @@ namespace Mapbox.Unity.MeshGeneration.Factories
 
 			var feat = new VectorFeatureUnity();
 			feat.Points.Add(dat);
+			
+			//this should return banner instructions but "BannerInstructions isn't being recognized :("
+			//var instructions = response.Routes[0].BannerInstructions;
+    		//map.BannerInstructions = instructions;
 
 			foreach (MeshModifier mod in MeshModifiers.Where(x => x.Active))
 			{
